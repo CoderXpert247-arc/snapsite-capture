@@ -1,6 +1,6 @@
 FROM node:20-slim
 
-# Install system Chromium — lighter than bundled puppeteer chromium
+# Install system Chromium and dependencies
 RUN apt-get update && apt-get install -y \
     chromium \
     libnss3 \
@@ -24,5 +24,8 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 COPY server.js .
 
-EXPOSE 4000
+# HuggingFace Spaces requires port 7860
+EXPOSE 7860
+ENV PORT=7860
+
 CMD ["node", "server.js"]
